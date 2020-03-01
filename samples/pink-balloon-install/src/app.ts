@@ -23,7 +23,9 @@ import {
 	AlphaMode,
 	Angle,
 	Color3,
-	User
+	User,
+	Sound,
+	TargetBehavior
 } from '@microsoft/mixed-reality-extension-sdk';
 import { Transform } from 'stream';
 
@@ -54,6 +56,8 @@ export default class PinkBalloonInstall {
 	private vrpaper: Actor = null;
 
 	private heads: Actor[] = [];
+
+	private sound1: Sound;
 
 	constructor(private context: Context, private baseUrl: string) {
 		console.log('TeamPlanner STARTED');
@@ -155,6 +159,14 @@ export default class PinkBalloonInstall {
 	 * Once the context is "started", initialize the app.
 	 */
 	private async started() {
+
+		/////////////
+		// SOUND1
+		/////////////
+		this.sound1 = this.assets.createSound(
+			'piano',
+			{ uri: `${this.baseUrl}/0m-057-A3.wav` }
+		);
 
 		/////////////
 		// LIGHT
@@ -411,12 +423,113 @@ export default class PinkBalloonInstall {
 		*/
 
 		///////////////////////////////
-		// NON-COLLIDING SCULPTUREBITS
+		// SOUND BITS
 		///////////////////////////////
 
 		for (var i = 0; i < 2; i++) {
 			for (var j = 0; j < 2; j++) {
 				for (var k = 0; k < 2; k++) {
+
+					const shape = Actor.CreatePrimitive(this.assets, {
+						definition: {
+							shape: this.generateShapePerRow(k + 1),
+							dimensions: { x: 1.7, y: 0.60, z: 1.70 }
+						},
+						addCollider: true
+					});
+
+					// TRANSFORM
+					shape.transform = new ActorTransform();
+					shape.transform.app.position = new Vector3(-j-5, 0.5 * k, -i + 5);
+					if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Sphere) {
+						shape.transform.local.scale = new Vector3(0.8, 0.8, 0.8);
+					} else if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Capsule) {
+						shape.transform.local.scale = new Vector3(0.6, 0.6, 0.6);
+					} else {
+						shape.transform.local.scale = new Vector3(0.4, 0.4, 0.4);
+					}
+
+					// shape.transform.local.scale = new Vector3(0.1, 0.1, 0.1);
+
+					// GRABBABLE
+					shape.grabbable = true;
+
+					// MATERIAL
+					const cubeMat = this.assets.createMaterial('material', {
+						color: { r: 0, g: 0, b: 1 }
+					});
+					shape.appearance.material = cubeMat;
+
+					// ON GRAB
+					// shape.onGrab('begin', () => {
+					//	const c = this.context.actor(shape.id);
+					//	console.log('grabbed');
+					// });
+
+					// BUTTON BEHAVIOR
+					const buttonBehavior = shape.setBehavior(ButtonBehavior);
+
+					buttonBehavior.onHover("enter", _ => {
+						// PLAY SOUND
+						shape.startSound(this.sound1.id, {volume: 1, time: 1});
+					});
+
+					buttonBehavior.onClick(_ => {
+						console.log('click');
+
+						// SHAPE COLOR CHANGE
+						/* const m = this.assets.createMaterial('material', {
+							color: this.generateColor()
+						});
+						shape.appearance.material = m; */
+
+						// SHAPE SIZE CHANGE
+						/*if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Box) {
+							shape.transform.local.scale = new Vector3(
+								(Math.random() + 0.05) * 0.8,
+								(Math.random() + 0.05) * 0.8,
+								(Math.random() + 0.05) * 0.8
+							);
+						}
+						if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Cylinder) {
+							const height = (Math.random() + 0.05) * 0.8;
+							const radius = (Math.random() + 0.05) * 0.5;
+							shape.transform.local.scale = new Vector3(
+								radius,
+								height,
+								radius
+							);
+						}*/
+						if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Capsule) {
+							const height = (Math.random() + 0.05) * 4;
+							const radius = (Math.random() + 0.05) * 0.5;
+							shape.transform.local.scale = new Vector3(
+								height,
+								0.6,
+								0.6
+							);
+						}
+						/*if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Sphere) {
+							const size = (Math.random() + 0.05) * 1.2;
+							shape.transform.local.scale = new Vector3(
+								size,
+								size,
+								size
+							);
+						}*/
+
+					});
+				}
+			}
+		}
+
+		///////////////////////////////
+		// NON-COLLIDING SCULPTUREBITS
+		///////////////////////////////
+
+		for (var i = 0; i < 4; i++) {
+			for (var j = 0; j < 4; j++) {
+				for (var k = 0; k < 4; k++) {
 
 					const shape = Actor.CreatePrimitive(this.assets, {
 						definition: {
@@ -461,12 +574,12 @@ export default class PinkBalloonInstall {
 
 						// SHAPE COLOR CHANGE
 						const m = this.assets.createMaterial('material', {
-							color: { r: Math.random(), g: Math.random(), b: Math.random() }
+							color: this.generateColor()
 						});
 						shape.appearance.material = m;
 
 						// SHAPE SIZE CHANGE
-						if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Box) {
+						/*if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Box) {
 							shape.transform.local.scale = new Vector3(
 								(Math.random() + 0.05) * 0.8,
 								(Math.random() + 0.05) * 0.8,
@@ -481,24 +594,24 @@ export default class PinkBalloonInstall {
 								height,
 								radius
 							);
-						}
+						}*/
 						if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Capsule) {
-							const height = (Math.random() + 0.05) * 0.8;
+							const height = (Math.random() + 0.05) * 4;
 							const radius = (Math.random() + 0.05) * 0.5;
 							shape.transform.local.scale = new Vector3(
 								height,
-								radius,
-								radius
+								0.6,
+								0.6
 							);
 						}
-						if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Sphere) {
+						/*if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Sphere) {
 							const size = (Math.random() + 0.05) * 1.2;
 							shape.transform.local.scale = new Vector3(
 								size,
 								size,
 								size
 							);
-						}
+						}*/
 
 					});
 				}
@@ -523,14 +636,36 @@ export default class PinkBalloonInstall {
 		return shape;
 	}
 
+	// pinks: https://i.pinimg.com/originals/05/41/90/054190a66e753cb0d4cf7ccf40c567b7.jpg
 	private generateColor() {
 		const colors: Color4[] = [
-			new Color4(1, 0, 0), // red
-			new Color4(0, 1, 0), // green
-			new Color4(0, 0, 1), // blue
-			new Color4(1, 1, 0), // yellow
-			new Color4(0, 1, 1), // cyan
-			new Color4(1, 0, 1), // magenta
+			new Color4(0, 0, 0), // black
+			new Color4(1, 1, 1), // white
+
+			new Color4(0.964, 0.6, 0.803), // pink
+			new Color4(0.988, 0.580, 0.686), // rose
+			new Color4(0.988, 0.274, 0.666), // fuscia
+			new Color4(0.949, 0.321, 0.470), // punch
+
+			new Color4(0.996, 0.772, 0.898), // blush
+			new Color4(0.996, 0.498, 0.611), // watermelon
+			new Color4(0.992, 0.643, 0.729), // flamingo
+			new Color4(0.949, 0.419, 0.541), // rouge
+
+			new Color4(0.992, 0.670, 0.623), // salmon
+			new Color4(0.996, 0.490, 0.415), // coral
+			new Color4(0.988, 0.580, 0.513), // peach
+			new Color4(0.988, 0.298, 0.305), // strawberry
+
+			new Color4(0.619, 0.258, 0.266), // rosewood
+			new Color4(0.988, 0.729, 0.796), // lemonade
+			new Color4(0.980, 0.525, 0.768), // taffy
+			new Color4(0.992, 0.364, 0.658), // bubblegum
+
+			new Color4(0.968, 0.603, 0.752), // ballet slipper
+			new Color4(0.949, 0.721, 0.776), // crepe
+			new Color4(0.882, 0.082, 0.517), // magenta
+			new Color4(1, 0.086, 0.580), // hot pink
 		];
 		return colors[Math.floor(Math.random() * colors.length)];
 		//return colors[0];
