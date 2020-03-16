@@ -60,11 +60,11 @@ export default class PinkBalloonInstall {
 	private sound1: Sound;
 
 	constructor(private context: Context, private baseUrl: string) {
-		console.log('TeamPlanner STARTED');
+		console.log('PinkBalloonInstall STARTED');
 
 		this.assets = new AssetContainer(context);
 		this.context.onStarted(() => this.started());
-		this.context.onUserJoined((user) => this.userJoined(user));
+		// this.context.onUserJoined((user) => this.userJoined(user));
 
 		console.log('session Id connected:');
 		console.log(this.context.sessionId);
@@ -423,9 +423,151 @@ export default class PinkBalloonInstall {
 		*/
 
 		///////////////////////////////
+		// SAUSAGES
+		///////////////////////////////
+		/* for (var i = 0; i < 7; i++) {
+			let sausage = Actor.CreateFromGltf(new AssetContainer(this.context), {
+				uri: `${this.baseUrl}/Sausage${i}.glb`,
+				colliderType: 'box',
+				actor: {
+					name: 'Team planning object',
+					transform: {
+						local: {
+							position: { x: -3, y: 0, z: i },
+							scale: { x: 0.07, y: 0.07, z: 0.07 },
+							rotation: { x: 0, y: 0, z: Angle.FromDegrees(90).radians() }
+						}
+					}
+				}
+			});
+			sausage.grabbable = true;
+			this.subscribeToGrabTransforms(sausage);
+		} */
+
+		//////////////////////////////////
+		// SAUSAGE 1 - STOOL SAUSAGE
+		//////////////////////////////////
+		const sausage1 = Actor.CreateFromGltf(new AssetContainer(this.context), {
+			uri: `${this.baseUrl}/Sausage1.glb`,
+			colliderType: 'box',
+			actor: {
+				name: 'Team planning object',
+				transform: {
+					local: {
+						position: { x: -0.47, y: 0.69, z: 0.14},
+						scale: { x: 0.07, y: 0.07, z: 0.07 },
+						rotation: { x: -0.14, y: 0.86, z: -0.478, w: 0.10}
+					}
+				}
+			}
+		});
+		sausage1.grabbable = true;
+		this.subscribeToGrabTransforms(sausage1);
+
+		//////////////////////////////////
+		// SAUSAGE 2
+		//////////////////////////////////
+		/* const sausage2 = Actor.CreateFromGltf(new AssetContainer(this.context), {
+			uri: `${this.baseUrl}/Sausage2.glb`,
+			colliderType: 'box',
+			actor: {
+				name: 'Team planning object',
+				transform: {
+					local: {
+						position: { x: -3, y: 0, z: i },
+						scale: { x: 0.07, y: 0.07, z: 0.07 },
+						rotation: { x: 0, y: 0, z: Angle.FromDegrees(90).radians() }
+					}
+				}
+			}
+		});
+		sausage2.grabbable = true;
+		this.subscribeToGrabTransforms(sausage2);
+
+		//////////////////////////////////
+		// SAUSAGE 3
+		//////////////////////////////////
+		const sausage3 = Actor.CreateFromGltf(new AssetContainer(this.context), {
+			uri: `${this.baseUrl}/Sausage3.glb`,
+			colliderType: 'box',
+			actor: {
+				name: 'Team planning object',
+				transform: {
+					local: {
+						position: { x: -3, y: 0, z: i },
+						scale: { x: 0.07, y: 0.07, z: 0.07 },
+						rotation: { x: 0, y: 0, z: Angle.FromDegrees(90).radians() }
+					}
+				}
+			}
+		});
+		sausage3.grabbable = true;
+		this.subscribeToGrabTransforms(sausage3);*/
+
+		//////////////////////////////////
+		// SAUSAGE 4 - WALL SAUSAGE
+		//////////////////////////////////
+		const sausage4 = Actor.CreateFromGltf(new AssetContainer(this.context), {
+			uri: `${this.baseUrl}/Sausage4.glb`,
+			colliderType: 'box',
+			actor: {
+				name: 'Team planning object',
+				transform: {
+					local: {
+						position: { x: 8.091, y: 1.43, z: -5.36},
+						scale: { x: 0.07, y: 0.07, z: 0.07 },
+						rotation: { x: 0.213, y: 0.54, z: 0.314, w: -0.74}
+					}
+				}
+			}
+		});
+		sausage4.grabbable = true;
+		this.subscribeToGrabTransforms(sausage4);
+
+		//////////////////////////////////
+		// SAUSAGE 5 - CHAIR SAUSAGE
+		//////////////////////////////////
+		const sausage5 = Actor.CreateFromGltf(new AssetContainer(this.context), {
+			uri: `${this.baseUrl}/Sausage5.glb`,
+			colliderType: 'box',
+			actor: {
+				name: 'Team planning object',
+				transform: {
+					local: {
+						position: { x: 6.67, y: 0.87, z: -5.87},
+						scale: { x: 0.07, y: 0.07, z: 0.07 },
+						rotation: { x: -0.73, y: -0.65, z: 0.111, w: 0.079}
+					}
+				}
+			}
+		});
+		sausage5.grabbable = true;
+		this.subscribeToGrabTransforms(sausage5);
+
+		//////////////////////////////////
+		// SAUSAGE 6
+		//////////////////////////////////
+		/* const sausage6 = Actor.CreateFromGltf(new AssetContainer(this.context), {
+			uri: `${this.baseUrl}/Sausage6.glb`,
+			colliderType: 'box',
+			actor: {
+				name: 'Team planning object',
+				transform: {
+					local: {
+						position: { x: 0, y: 0, z: 0 },
+						scale: { x: 0.07, y: 0.07, z: 0.07 },
+						rotation: { x: 0, y: 0, z: Angle.FromDegrees(90).radians() }
+					}
+				}
+			}
+		});
+		sausage6.grabbable = true;
+		this.subscribeToGrabTransforms(sausage6); */
+
+		///////////////////////////////
 		// SOUND BITS
 		///////////////////////////////
-
+		/*
 		for (var i = 0; i < 2; i++) {
 			for (var j = 0; j < 2; j++) {
 				for (var k = 0; k < 2; k++) {
@@ -466,6 +608,9 @@ export default class PinkBalloonInstall {
 					//	console.log('grabbed');
 					// });
 
+					// ON GRAB END
+					this.subscribeToGrabTransforms(shape);
+
 					// BUTTON BEHAVIOR
 					const buttonBehavior = shape.setBehavior(ButtonBehavior);
 
@@ -478,13 +623,13 @@ export default class PinkBalloonInstall {
 						console.log('click');
 
 						// SHAPE COLOR CHANGE
-						/* const m = this.assets.createMaterial('material', {
+						const m = this.assets.createMaterial('material', {
 							color: this.generateColor()
 						});
-						shape.appearance.material = m; */
+						shape.appearance.material = m;
 
 						// SHAPE SIZE CHANGE
-						/*if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Box) {
+						if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Box) {
 							shape.transform.local.scale = new Vector3(
 								(Math.random() + 0.05) * 0.8,
 								(Math.random() + 0.05) * 0.8,
@@ -499,7 +644,7 @@ export default class PinkBalloonInstall {
 								height,
 								radius
 							);
-						}*/
+						}
 						if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Capsule) {
 							const height = (Math.random() + 0.05) * 4;
 							const radius = (Math.random() + 0.05) * 0.5;
@@ -509,39 +654,40 @@ export default class PinkBalloonInstall {
 								0.6
 							);
 						}
-						/*if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Sphere) {
+						if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Sphere) {
 							const size = (Math.random() + 0.05) * 1.2;
 							shape.transform.local.scale = new Vector3(
 								size,
 								size,
 								size
 							);
-						}*/
+						}
 
 					});
 				}
 			}
 		}
+		*/
 
 		///////////////////////////////
 		// NON-COLLIDING SCULPTUREBITS
 		///////////////////////////////
 
 		for (var i = 0; i < 4; i++) {
-			for (var j = 0; j < 4; j++) {
-				for (var k = 0; k < 4; k++) {
+			for (var j = 0; j < 3; j++) {
+				for (var k = 0; k < 1; k++) {
 
 					const shape = Actor.CreatePrimitive(this.assets, {
 						definition: {
 							shape: this.generateShapePerRow(k + 1),
-							dimensions: { x: 1.7, y: 0.60, z: 1.70 }
+							dimensions: { x: 1.6, y: 0.20, z: 0.70 }
 						},
 						addCollider: true
 					});
 
 					// TRANSFORM
 					shape.transform = new ActorTransform();
-					shape.transform.app.position = new Vector3(-j, 0.5 * k, -i + 5);
+					shape.transform.app.position = new Vector3(4.56 - j, Math.random() + 1, - 3.6 + i);
 					if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Sphere) {
 						shape.transform.local.scale = new Vector3(0.8, 0.8, 0.8);
 					} else if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Capsule) {
@@ -549,6 +695,7 @@ export default class PinkBalloonInstall {
 					} else {
 						shape.transform.local.scale = new Vector3(0.4, 0.4, 0.4);
 					}
+					shape.transform.local.rotation = Quaternion.RotationAxis(Vector3.Backward(), 90 * DegreesToRadians);
 
 					// shape.transform.local.scale = new Vector3(0.1, 0.1, 0.1);
 
@@ -557,7 +704,7 @@ export default class PinkBalloonInstall {
 
 					// MATERIAL
 					const cubeMat = this.assets.createMaterial('material', {
-						color: { r: 1, g: 1, b: 1 }
+						color: { r: 0.5, g: 0.5, b: 0.5, a: 0.5 }
 					});
 					shape.appearance.material = cubeMat;
 
@@ -614,9 +761,29 @@ export default class PinkBalloonInstall {
 						}*/
 
 					});
+
+					// GRAB BEHAVIOR
+					this.subscribeToGrabTransforms(shape);
 				}
 			}
 		}
+	}
+
+	private subscribeToGrabTransforms(shape: Actor) {
+		shape.subscribe('transform');
+		shape.onGrab("end", () => {
+			console.log('*************************');
+			console.log('position x:', shape.transform.app.position.x);
+			console.log('position y:', shape.transform.app.position.y);
+			console.log('position z:', shape.transform.app.position.z);
+			console.log('-------');
+			console.log('rotation x:', shape.transform.app.rotation.x);
+			console.log('rotation y:', shape.transform.app.rotation.y);
+			console.log('rotation z:', shape.transform.app.rotation.z);
+			console.log('rotation w:', shape.transform.app.rotation.w);
+			console.log('*************************');
+			console.log(' ');
+		});
 	}
 
 	private generateShapePerRow(row: number) {
