@@ -1,4 +1,8 @@
 {
     "typescript.tsdk": "node_modules\\typescript\\lib",
-    "appService.defaultWebAppToDeploy": "None"
+    "appService.defaultWebAppToDeploy": "None",
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ]
 }
