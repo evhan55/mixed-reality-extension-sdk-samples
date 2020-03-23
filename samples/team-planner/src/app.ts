@@ -134,7 +134,7 @@ export default class TeamPlanner {
 
 		// HEAD
 		let head = Actor.CreateFromGltf(new AssetContainer(this.context), {
-			uri: `https://pink-box-game.azurewebsites.net/clippyhead.glb`,
+			uri: `${this.baseUrl}/clippyhead.glb`,
 			colliderType: 'box',
 			actor: {
 				name: 'Team planning object',
@@ -187,7 +187,7 @@ export default class TeamPlanner {
 		//////////////////////////////
 		for (var i = 0; i < 1; i++) {
 			let object = Actor.CreateFromGltf(new AssetContainer(this.context), {
-				uri: `https://pink-box-game.azurewebsites.net/coin-man.glb`,
+				uri: `${this.baseUrl}/coin-man.glb`,
 				colliderType: 'box',
 				actor: {
 					name: 'Team planning object',
@@ -208,7 +208,7 @@ export default class TeamPlanner {
 		//////////////////////////////
 		for (var i = 0; i < 1; i++) {
 			let object = Actor.CreateFromGltf(new AssetContainer(this.context), {
-				uri: `https://pink-box-game.azurewebsites.net/puzzle-piece.glb`,
+				uri: `${this.baseUrl}/puzzle-piece.glb`,
 				colliderType: 'box',
 				actor: {
 					name: 'Team planning object',
@@ -223,9 +223,10 @@ export default class TeamPlanner {
 			});
 			object.grabbable = true;
 		}
+		*/
 
 		//////////////////////////////
-		// OBJS / SHEETS
+		// NON-COLLIDING CARDS
 		//////////////////////////////
 
 		const objects: string[] = [
@@ -269,11 +270,10 @@ export default class TeamPlanner {
 				// 	}
 				// });
 				
-
 				// Texture
 				const tex = this.assets.createTexture('tex', {
 					// uri: `${this.baseUrl}/altspace-logo.jpg`
-					uri: `https://pink-box-game.azurewebsites.net/`+objects[i]
+					uri: `${this.baseUrl}/${objects[i]}`
 				});
 
 				// Material
@@ -306,15 +306,15 @@ export default class TeamPlanner {
 			}
 		}
 
-		//////////////////////////////
-		// NON-COLLIDING CARDS
-		//////////////////////////////
+		//////////////////////////////////
+		// NON-COLLIDING LINES/CIRCLE BITS
+		//////////////////////////////////
 
 		let jPos = 0;
 
-		for (var i = 0; i < 2; i++) {
-			for (var j = 0; j < 2; j++) {
-				for (var k = 0; k < 2; k++) {
+		for (var i = 0; i < 4; i++) {
+			for (var j = 0; j < 4; j++) {
+				for (var k = 0; k < 4; k++) {
 
 					const shape = Actor.CreatePrimitive(this.assets, {
 						definition: {
@@ -347,12 +347,6 @@ export default class TeamPlanner {
 					});
 					shape.appearance.material = cubeMat;
 
-					// ON GRAB
-					// shape.onGrab('begin', () => {
-					//	const c = this.context.actor(shape.id);
-					//	console.log('grabbed');
-					// });
-
 					// BUTTON BEHAVIOR
 					const buttonBehavior = shape.setBehavior(ButtonBehavior);
 					buttonBehavior.onClick(_ => {
@@ -360,63 +354,22 @@ export default class TeamPlanner {
 
 						// SHAPE COLOR CHANGE
 						const m = this.assets.createMaterial('material', {
-							//color: { r: Math.random(), g: Math.random(), b: Math.random() }
-							//color: new Color4(1, 0, 0)
 							color: this.generateColor()
 						});
 						shape.appearance.material = m;
-
-						// SHAPE SIZE CHANGE
-						
-						// if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Box) {
-						// 	shape.transform.local.scale = new Vector3(
-						// 		(Math.random() + 0.05) * 0.8,
-						// 		(Math.random() + 0.05) * 0.8,
-						// 		(Math.random() + 0.05) * 0.8
-						// 	);
-						// }
-						// if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Cylinder) {
-						// 	const height = (Math.random() + 0.05) * 0.8;
-						// 	const radius = (Math.random() + 0.05) * 0.5;
-						// 	shape.transform.local.scale = new Vector3(
-						// 		radius,
-						// 		height,
-						// 		radius
-						// 	);
-						// }
-						// if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Capsule) {
-						// 	const height = (Math.random() + 0.05) * 0.8;
-						// 	const radius = (Math.random() + 0.05) * 0.5;
-						// 	shape.transform.local.scale = new Vector3(
-						// 		height,
-						// 		radius,
-						// 		radius
-						// 	);
-						// }
-						// if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Sphere) {
-						// 	const size = (Math.random() + 0.05) * 1.2;
-						// 	shape.transform.local.scale = new Vector3(
-						// 		size,
-						// 		size,
-						// 		size
-						// 	);
-						// }
-						
-
 					});
 				}
 				jPos+= 0.25;
 			}
 		}
-		*/
 
 		///////////////////////////////
 		// NON-COLLIDING SCULPTUREBITS
 		///////////////////////////////
 
-		for (var i = 0; i < 2; i++) {
-			for (var j = 0; j < 2; j++) {
-				for (var k = 0; k < 2; k++) {
+		for (var i = 0; i < 4; i++) {
+			for (var j = 0; j < 4; j++) {
+				for (var k = 0; k < 4; k++) {
 
 					const shape = Actor.CreatePrimitive(this.assets, {
 						definition: {
@@ -428,7 +381,7 @@ export default class TeamPlanner {
 
 					// TRANSFORM
 					shape.transform = new ActorTransform();
-					shape.transform.app.position = new Vector3(-j, 0.5 * k, -i + 5);
+					shape.transform.app.position = new Vector3(-j, (0.5 * k) + 0.5, -i + 5);
 					if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Sphere) {
 						shape.transform.local.scale = new Vector3(0.8, 0.8, 0.8);
 					} else if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Capsule) {
@@ -447,12 +400,6 @@ export default class TeamPlanner {
 						color: { r: 1, g: 1, b: 1 }
 					});
 					shape.appearance.material = cubeMat;
-
-					// ON GRAB
-					// shape.onGrab('begin', () => {
-					//	const c = this.context.actor(shape.id);
-					//	console.log('grabbed');
-					// });
 
 					// BUTTON BEHAVIOR
 					const buttonBehavior = shape.setBehavior(ButtonBehavior);
