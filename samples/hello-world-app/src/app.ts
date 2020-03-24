@@ -31,7 +31,11 @@ export default class HelloWorld {
 	 * Once the context is "started", initialize the app.
 	 */
 	private started() {
-		// Create a new actor with no mesh, but some text.
+
+		///////////////////
+		// TEXT
+		///////////////////
+
 		this.text = Actor.Create(this.context, {
 			actor: {
 				name: 'Text',
@@ -64,7 +68,10 @@ export default class HelloWorld {
 				wrapMode: AnimationWrapMode.PingPong
 			});
 
-		// Load a glTF model
+		////////////////////
+		// CUBE
+		////////////////////
+
 		this.cube = Actor.CreateFromGltf(new AssetContainer(this.context), {
 			// at the given URL
 			uri: `${this.baseUrl}/altspace-cube.glb`,
@@ -91,6 +98,10 @@ export default class HelloWorld {
 				keyframes: this.generateSpinKeyframes(1.0, Vector3.Right()),
 				events: []
 			});
+
+		//////////////////////////////
+		// ANIMATIONS AND BEHAVIORS
+		//////////////////////////////
 
 		// Now that the text and its animation are all being set up, we can start playing
 		// the animation.
