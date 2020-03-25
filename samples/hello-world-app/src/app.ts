@@ -84,8 +84,7 @@ export default class HelloWorld {
 				parentId: this.text.id,
 				transform: {
 					local: {
-						// position: { x: 0, y: -1, z: 0 },
-						position: { x: 0, y: 1, z: 0 },
+						position: { x: 0, y: -1, z: 0 },
 						scale: { x: 0.4, y: 0.4, z: 0.4 }
 					}
 				}
@@ -97,7 +96,7 @@ export default class HelloWorld {
 			'DoAFlip', {
 				keyframes: this.generateSpinKeyframes(1.0, Vector3.Right()),
 				events: []
-			});
+		});
 
 		//////////////////////////////
 		// ANIMATIONS AND BEHAVIORS
