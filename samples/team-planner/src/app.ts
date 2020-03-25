@@ -247,7 +247,7 @@ export default class TeamPlanner {
 			'altspace-2-small.jpg'
 		];
 
-		const square = this.assets.createBoxMesh('square', 3.5, 0.2, 2);
+		const square = this.assets.createBoxMesh('square', 7, 0.2, 4);
 
 		let xPos = 0;
 		for (var s = 0; s < 1; s++) {
@@ -309,7 +309,7 @@ export default class TeamPlanner {
 		//////////////////////////////////
 		// NON-COLLIDING LINES/CIRCLE BITS
 		//////////////////////////////////
-
+		/*
 		let jPos = 0;
 
 		for (var i = 0; i < 4; i++) {
@@ -362,14 +362,15 @@ export default class TeamPlanner {
 				jPos+= 0.25;
 			}
 		}
+		*/
 
 		///////////////////////////////
 		// NON-COLLIDING SCULPTUREBITS
 		///////////////////////////////
 
-		for (var i = 0; i < 4; i++) {
-			for (var j = 0; j < 4; j++) {
-				for (var k = 0; k < 4; k++) {
+		for (var i = 0; i < 3; i++) {
+			for (var j = 0; j < 3; j++) {
+				for (var k = 0; k < 3; k++) {
 
 					const shape = Actor.CreatePrimitive(this.assets, {
 						definition: {
