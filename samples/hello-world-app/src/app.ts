@@ -22,6 +22,8 @@ import {
 export default class HelloWorld {
 	private text: Actor = null;
 	private cube: Actor = null;
+	private cube2: Actor = null;
+	private cube3: Actor = null;
 
 	constructor(private context: Context, private baseUrl: string) {
 		this.context.onStarted(() => this.started());
@@ -79,24 +81,77 @@ export default class HelloWorld {
 			colliderType: 'box',
 			// Also apply the following generic actor properties.
 			actor: {
-				name: 'Altspace Cube',
-				// Parent the glTF model to the text actor.
-				parentId: this.text.id,
-				transform: {
-					local: {
-						position: { x: 0, y: -1, z: 0 },
-						scale: { x: 0.4, y: 0.4, z: 0.4 }
-					}
+			name: 'Altspace Cube',
+			// Parent the glTF model to the text actor.
+			parentId: this.text.id,
+			transform: {
+				local: {
+				position: { x: 0, y: -1, z: 0 },
+				scale: { x: 0.4, y: 0.4, z: 0.4 }
 				}
 			}
+			}
 		});
-
+		
 		// Create some animations on the cube.
 		this.cube.createAnimation(
 			'DoAFlip', {
-				keyframes: this.generateSpinKeyframes(1.0, Vector3.Right()),
-				events: []
+			keyframes: this.generateSpinKeyframes(1.0, Vector3.Right()),
+			events: []
 		});
+		
+		this.cube2 = Actor.CreateFromGltf(new AssetContainer(this.context), {
+			// at the given URL
+			uri: `${this.baseUrl}/altspace-cube.glb`,
+			// and spawn box colliders around the meshes.
+			colliderType: 'box',
+			// Also apply the following generic actor properties.
+			actor: {
+			name: 'Altspace Cube 2',
+			// Parent the glTF model to the text actor.
+			parentId: this.text.id,
+			transform: {
+				local: {
+				position: { x: 0, y: -1, z: 1 },
+				scale: { x: 0.4, y: 0.4, z: 0.4 }
+				}
+			}
+			}
+		});
+		
+		// Create some animations on the cube.
+		this.cube2.createAnimation(
+			'DoAFlip', {
+			keyframes: this.generateSpinKeyframes(1.0, Vector3.Right()),
+			events: []
+		});
+		
+		this.cube3 = Actor.CreateFromGltf(new AssetContainer(this.context), {
+			// at the given URL
+			uri: `${this.baseUrl}/altspace-cube.glb`,
+			// and spawn box colliders around the meshes.
+			colliderType: 'box',
+			// Also apply the following generic actor properties.
+			actor: {
+			name: 'Altspace Cube 3',
+			// Parent the glTF model to the text actor.
+			parentId: this.text.id,
+			transform: {
+				local: {
+				position: { x: 0, y: -1, z: 2 },
+				scale: { x: 0.4, y: 0.4, z: 0.4 }
+				}
+			}
+			}
+		});
+		
+		// Create some animations on the cube.
+		this.cube3.createAnimation(
+			'DoAFlip', {
+			keyframes: this.generateSpinKeyframes(1.0, Vector3.Right()),
+			events: []
+		});
+  
 
 		//////////////////////////////
 		// ANIMATIONS AND BEHAVIORS
