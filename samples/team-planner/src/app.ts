@@ -161,7 +161,7 @@ export default class TeamPlanner {
 		});
 		this.head.subscribe('transform');
 
-		this.heads.push(head);
+		this.heads.push(this.head);
 		console.log('HEADS LIST');
 		console.log(this.heads);
 	}
