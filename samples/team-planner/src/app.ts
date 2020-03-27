@@ -53,6 +53,10 @@ export default class TeamPlanner {
 	private vrbook: Actor = null;
 	private vrpaper: Actor = null;
 
+	private hand1: Actor = null;
+	private hand2: Actor = null;
+	private head: Actor = null;
+
 	private heads: Actor[] = [];
 
 	constructor(private context: Context, private baseUrl: string) {
@@ -61,9 +65,20 @@ export default class TeamPlanner {
 		this.assets = new AssetContainer(context);
 		this.context.onStarted(() => this.started());
 		this.context.onUserJoined((user) => this.userJoined(user));
+		this.context.onUserLeft((user) => this.userLeft(user));
 
 		console.log('session Id connected:');
 		console.log(this.context.sessionId);
+	}
+
+	private userLeft(user: User) {
+
+		console.log('USER JOINED TRY TO DELETE RIGHT HAND, LEFT HAND, HEAD');
+		this.head.destroy();
+		this.hand1.destroy();
+		this.hand2.destroy();
+
+
 	}
 
 	private userJoined(user: User) {
@@ -85,7 +100,7 @@ export default class TeamPlanner {
 		});
 
 		// RIGHT HAND
-		let hand1 = Actor.Create(this.context, {
+		this.hand1 = Actor.Create(this.context, {
 			actor: {
 				name: 'Team planning object',
 				appearance: {
@@ -98,10 +113,10 @@ export default class TeamPlanner {
 				}
 			}
 		});
-		hand1.subscribe('transform');
+		this.hand1.subscribe('transform');
 
 		// LEFT HAND
-		let hand2 = Actor.Create(this.context, {
+		this.hand2 = Actor.Create(this.context, {
 			actor: {
 				name: 'Team planning object',
 				appearance: {
@@ -114,7 +129,7 @@ export default class TeamPlanner {
 				}
 			}
 		});
-		hand2.subscribe('transform');
+		this.hand2.subscribe('transform');
 
 		// HEAD
 		// const head = Actor.Create(this.context, {
@@ -133,7 +148,7 @@ export default class TeamPlanner {
 		// head.subscribe('transform');
 
 		// HEAD
-		let head = Actor.CreateFromGltf(new AssetContainer(this.context), {
+		this.head = Actor.CreateFromGltf(new AssetContainer(this.context), {
 			uri: `${this.baseUrl}/clippyhead.glb`,
 			colliderType: 'box',
 			actor: {
@@ -144,7 +159,7 @@ export default class TeamPlanner {
 				}
 			}
 		});
-		head.subscribe('transform');
+		this.head.subscribe('transform');
 
 		this.heads.push(head);
 		console.log('HEADS LIST');
@@ -230,21 +245,12 @@ export default class TeamPlanner {
 		//////////////////////////////
 
 		const objects: string[] = [
-			'barn-doors-small.png',
-			'barn-m-studio-small.jpg',
-			'barn-photo-studio-small.jpg',
-			'desk-ar-1-small.jpg',
-			'desk-ar-2-small.jpg',
-			'large-cards-barn-1-small.jpg',
-			'large-cards-barn-2-small.jpg',
-			'ev-in-hololens-small.jpg',
-			'figure-small.jpg',
-			'm-in-person-small.jpg',
-			'next-5-years-small.jpg',
-			'vi-in-altspace-small.jpg',
-			'win-small.jpg',
-			'altspace-1-small.jpg',
-			'altspace-2-small.jpg'
+			'Slide32.PNG',
+			'Slide33.PNG',
+			'Slide34.PNG',
+			'Slide35.PNG',
+			'Slide36.PNG',
+			'Slide37.PNG'
 		];
 
 		const square = this.assets.createBoxMesh('square', 7, 0.2, 4);
@@ -292,7 +298,7 @@ export default class TeamPlanner {
 						},
 						transform: {
 							local: {
-								position: { x: 0, y: s, z: xPos },
+								position: { x: 9.6 + xPos, y: 1.44, z: xPos},
 								scale: { x: 0.07, y: 0.07, z: 0.07 },
 								rotation: { x: 0, y: 0, z: Angle.FromDegrees(90).radians() }
 							}
@@ -302,7 +308,9 @@ export default class TeamPlanner {
 				object.setCollider("box", false);
 				object.grabbable = true;
 
-				xPos += 0.5;
+				this.subscribeToGrabTransforms(object);
+
+				xPos += 0.25;
 			}
 		}
 
@@ -368,9 +376,9 @@ export default class TeamPlanner {
 		// NON-COLLIDING SCULPTUREBITS
 		///////////////////////////////
 
-		for (var i = 0; i < 3; i++) {
-			for (var j = 0; j < 3; j++) {
-				for (var k = 0; k < 3; k++) {
+		for (var i = 0; i < 2; i++) {
+			for (var j = 0; j < 2; j++) {
+				for (var k = 0; k < 2; k++) {
 
 					const shape = Actor.CreatePrimitive(this.assets, {
 						definition: {
@@ -382,7 +390,8 @@ export default class TeamPlanner {
 
 					// TRANSFORM
 					shape.transform = new ActorTransform();
-					shape.transform.app.position = new Vector3(-j, (0.5 * k) + 0.5, -i + 5);
+					// shape.transform.app.position = new Vector3(-j, (0.5 * k) + 0.5, -i + 3.5);
+					shape.transform.app.position = new Vector3(-0.061 - j, 0.711 + k, -1.59 - i);
 					if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Sphere) {
 						shape.transform.local.scale = new Vector3(0.8, 0.8, 0.8);
 					} else if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Capsule) {
@@ -416,9 +425,9 @@ export default class TeamPlanner {
 						// SHAPE SIZE CHANGE
 						if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Box) {
 							shape.transform.local.scale = new Vector3(
-								(Math.random() + 0.05) * 0.8,
-								(Math.random() + 0.05) * 0.8,
-								(Math.random() + 0.05) * 0.8
+								(Math.random() + 0.05) * 0.4,
+								(Math.random() + 0.05) * 0.4,
+								(Math.random() + 0.05) * 0.4
 							);
 						}
 						if (shape.appearance.mesh.primitiveDefinition.shape === PrimitiveShape.Cylinder) {
@@ -449,15 +458,36 @@ export default class TeamPlanner {
 						}
 
 					});
+
+					// REGISTER POS
+					this.subscribeToGrabTransforms(shape);
 				}
 			}
 		}
 	}
 
+	private subscribeToGrabTransforms(shape: Actor) {
+		shape.subscribe('transform');
+		shape.onGrab("end", () => {
+			console.log('*************************');
+			console.log('position x:', shape.transform.app.position.x);
+			console.log('position y:', shape.transform.app.position.y);
+			console.log('position z:', shape.transform.app.position.z);
+			console.log('-------');
+			console.log('rotation x:', shape.transform.app.rotation.x);
+			console.log('rotation y:', shape.transform.app.rotation.y);
+			console.log('rotation z:', shape.transform.app.rotation.z);
+			console.log('rotation w:', shape.transform.app.rotation.w);
+			console.log('*************************');
+			console.log(' ');
+		});
+	}
+
 	private generateShapePerRow(row: number) {
 		var shape = PrimitiveShape.Box;
 		if (row === 2) {
-			shape = PrimitiveShape.Sphere;
+			// shape = PrimitiveShape.Sphere;
+			shape = PrimitiveShape.Box;
 		}
 		if (row === 3) {
 			shape = PrimitiveShape.Box;
